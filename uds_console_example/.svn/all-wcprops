@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/src/hacks/!svn/ver/2/uds_console_example
+END
+client.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/src/hacks/!svn/ver/1/uds_console_example/client.c
+END
+Makefile.all
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/src/hacks/!svn/ver/1/uds_console_example/Makefile.all
+END
+server.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/src/hacks/!svn/ver/1/uds_console_example/server.c
+END
+console.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/src/hacks/!svn/ver/1/uds_console_example/console.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/src/hacks/!svn/ver/1/uds_console_example/Makefile
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/src/hacks/!svn/ver/1/uds_console_example/README
+END

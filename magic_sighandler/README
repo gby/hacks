@@ -1,0 +1,24 @@
+
+Usage example:
+
+gby@voyager:~/src/hacks/magic_sighandler$ make
+cc -fPIC magic_sighandler.c -g -shared \
+	-Wl,-soname,libmagic_sighandler.so.1 -o libmagic_sighandler.so.1.0.0
+gby@voyager:~/src/hacks/magic_sighandler$ LD_PRELOAD=./libmagic_sighandler.so.1.0.0 /bin/sleep 3400 &
+[1] 7755
+gby@voyager:~/src/hacks/magic_sighandler$ 
+*** magic handler loaded. Registering...
+gby@voyager:~/src/hacks/magic_sighandler$ 
+gby@voyager:~/src/hacks/magic_sighandler$ killall -USR1 sleep
+
+*** TEST HANDLER CALLED ***
+gby@voyager:~/src/hacks/magic_sighandler$ killall -USR1 sleep
+
+*** TEST HANDLER CALLED ***
+gby@voyager:~/src/hacks/magic_sighandler$ killall -USR1 sleep
+
+*** TEST HANDLER CALLED ***
+gby@voyager:~/src/hacks/magic_sighandler$ fg
+LD_PRELOAD=./libmagic_sighandler.so.1.0.0 /bin/sleep 3400
+
+

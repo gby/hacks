@@ -1,0 +1,281 @@
+
+
+Drill
+~~~~~
+
+Create a server implementing the Conway's Game of Life game and client to use it.
+
+The Game of Life is a cellular automaton devised by the British mathematician John 
+Horton Conway in 1970. It is the best-known example of a cellular automaton.
+
+The "game" is actually a zero-player game, meaning that its evolution is determined 
+by its initial state, needing no input from human players. One interacts with the 
+Game of Life by creating an initial configuration and observing how it evolves. 
+A variant exists where two players compete.
+
+Example implementastion for the Game of Life in C is attached to the end of this 
+file.
+
+The server should be implemented as a multi threaded daemon, with one thread
+running the Game of Life and another thread handling client requests.
+
+The thread running the game of life should be synchronized with the client requests 
+in such a way that requests are only handled in between generations and never in
+the middle of one (hint: use POSIX Mutexes).
+
+The server should handle termination request from it's client (see ahead), or
+via the SIGINT and sigkill signals. Termination should always be clean and
+shall not leave any "left overs" such as open Unix domain sockets and shared
+memory objects.
+
+The client should be able to connect to the server via IPC (hint: use either
+Unix domain sockets or POSIX shared memory) and perform the following actions:
+
+1. Request a game of life board status display that will include a generation
+number.
+
+2. Request the game of life server to re-start the game, using a randomaly
+chosen pattern. (hint: use the rand() and srand() functions to get random
+numbers).
+
+3. Request the game of life server to terminate.
+
+Example of refernce implementation usage:
+
+$ ./server
+demo_server going into background... 
+$ ./client demo_server p
+demo_server#
+Generation: 10
+               *              ****  *          **           *          ** **    |
+ **            *                  **        ** * **       *             * *     |
+*  *                              **       *       *    *  *             *      |
+*****                                           *  *      *                     |
+** ***      *        **                          ***   *    *                 * |
+****     * **        * *                               *        **           * *|
+* *      ****          *                              ** *        *       *     |
+*         **         * *                             * **     *  **       **    |
+            *        **                     *        * ** ** **          *   ** |
+*      *** * *       **                    **       ** *  **  *           *     |
+*  *   *   **                            * *       * **     ***             ** *|
+* *    *****         * * * * *    ** *   *     **    **                 ***** * |
+ *       **            **   **** ** **         *                 *     ***      |
+           *      ***   *     **     *      * * * **            * *   *      ** |
+          * *   ***         **   *    *       ****       **            * *****  |
+          * *   *  *     ** *******  *            *      **   * *        *****  |
+           *     ***          * *   ***  *  ***** * **  *      **               |
+    **             **            *** ** *       *   *   *    *          ***     |
+   *  *            **                   *           *   *  **   *          *    |
+    **                       * * **     *        *   ***   *  **           **   |
+
+$ ./client demo_server p
+demo_server#
+Generation: 12
+                                   *         **       *                **       |
+ *                             *    *         *            *           *   *    |
+**                                 *         * *   **      **           ***     |
+    **                                              *      *                    |
+            *        **                          *  *                           |
+          * *        * **                        ***             *            * |
+***     ***            **                                       * *      * *  **|
+***      **            *                                  *     ***      *  * **|
+       *   **       *  *                  * *         * *   *  **        * **  *|
+*      ** ***       ***                   *  *        ****     *           **   |
+**    * *  **        * *          *         *        * * ******                 |
+                    *  **          ****    *   **    **      **           *     |
+ *                ****        **             ** **   *                **        |
+*         **      *  *** ****  *    *  *         **              **    ** ** ** |
+         ** *    ** *   * ***   *     *      *** * *     **      *     **** *** |
+          * *   **        ****   *** **         ****    * *   *  *     *        |
+           *                     *     **    *  * * **        *  *      * *     |
+    **                           ***     *   *  ** ** *  * **           *** *   |
+   *  *                        *** **  ***    ** *  *    **              * **   |
+    **                         *  ***         *            *   *        *  **   |
+
+$ ./client demo_server p
+demo_server#
+Generation: 13
+                                             **                        **       |
+**                                 **          *           **          *  *     |
+**                                            *    **     ***           ***     |
+                                                    **     **            *      |
+           *         ***                         *  *                           |
+ *        *          *  *                        ***             *            * |
+  *     *                                         *             * *       *     |
+  *                   **                                          *     **  *   |
+       *    *       *  *                   *          * *      *              * |
+ *    * ***  *      *  *                    **       *         **         ***  *|
+**      *** *          **          ***     **        *   ****  *           *    |
+**                     **          ***      ******  **    **  *                 |
+                  *      ***  **   *  *       *   *  **               ******    |
+         ***          ****  *****                                **       **  **|
+         *  *   * ** ****       ***** **      **   *     **     **    *   * * * |
+         ** *   ***      **  *  ***  **      *            *     ***    *  ** *  |
+           *               **   *   * ***      *     *   *** *         ** **    |
+    **                             **    *   *           * *            *   *   |
+   *  *                        *        **   *** *****   *  *                *  |
+    **                         * ** *   *                 *            ******   |
+
+$ ./client demo_server c
+demo_server#
+Re-starting life.
+$ ./client demo_server p
+demo_server#
+Generation: 2
+  * *   *  **       **            ***    *    ***      ** * *     *   **        |
+ * **   ** * **  * ** *  * **    * **    *  *   *******          *    ***   *   |
+**         *      ** *  * ***     * *    * ** *      **  ****    *    * *   *** |
+***       ** **  *        * *      *        * *    **  * **  *   *  *     *** **|
+      **   *   * *     *  * *               **                   **       **  **|
+       **     * *      *    *  * *       ****     *             **       *** *  |
+* * ** *      **       ***  *  *  *     **   ** * *            *   * *   *      |
+  *  **      ** *      *   **    **       * **                 *    *           |
+    ** *      *** *    *     *     **  ***    *****           **             ***|
+   **  ***     *   *      *** *    *        ****    **         *        *       |
+   **              *   *    *          *      **    **        ***    *      *   |
+   ***         *   *   **  **       ** *       *   **  **     **   * ***     ***|
+    *           **        * *       *      *  **   ***** *           *     **   |
+   *  *     *            ***        * *  *  * **     *****  **        **        |
+ **   **  *  *            *        * ** ** * **   *         **      **   *      |
+ **      ***  *           *      **   ****  *   ***        **   ***       * *** |
+** *   *** *             **  *        ***        *          ****     * **   *   |
+* * ** * **   *       ***   ***        **   ** *  *       *        **   *    ** |
+       *  * ***  *    ****  ***      *  * * ** ***       ****   ** *            |
+ ** **** **  *  **  *  ***  *        *       *          *     ** **   *         |
+
+$ ./client demo_server l
+demo_server#
+Unknown command
+$ ./client demo_server q
+demo_server#
+Server quits.
+$ ./client demo_server p
+Connecting: No such file or directory
+$
+
+life.c example implmentation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Call start life to init init.
+2. Call bitmap_next to advance one generation.
+3. Call bitmap_display to print the current board to the supplied FILE stream
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "console.h"
+
+
+
+unsigned char display[HMAX][VMAX];
+unsigned char bitmap[2][HMAX][VMAX];
+
+static const int hsize=HMAX, vsize=VMAX;
+
+static int cbn, generation;
+
+void pixel(int c, int i, int j)
+{
+  if (c<2 || c>3)
+    {
+      bitmap[1-cbn][i][j] = 0;
+      display[i][j] = 0;
+      return;
+    }
+  if (c==3)
+    {
+      bitmap[1-cbn][i][j] = 1;
+      display[i][j] = 1;
+      return;
+    }
+  bitmap[1-cbn][i][j] = bitmap[cbn][i][j];
+}
+
+void print_display(char * msg, int size) {
+
+	  int i,j, len;
+
+	  len = snprintf(msg, size, "Generation: %d\n", generation);
+	  msg += len;
+	  size -= len;
+	  if(size<=0) goto the_end;
+	  
+	  for (i=1; i<=HMAX; i++) {
+		  for(j=1; j<=VMAX; j++) {
+			  len = snprintf(msg, size, "%c", (display[i][j] ? '*' : ' '));
+			  msg += len;
+			  size -= len;
+			  if(size<=0) break;
+	    }
+		len = snprintf(msg, size, "|\n");
+		msg += len;
+		size -= len;
+		if(size<=0) break;
+	  }
+	
+the_end:
+	   return;
+}
+
+void bitmap_init(void)
+{
+  int i,j;
+  
+  for (i=1; i<=hsize; i++)
+    for(j=1; j<=vsize; j++)
+      if((bitmap[cbn][i][j] = rand() %2))
+    	  display[i][j] = 1;
+      else
+    	  display[i][j] = 0;
+
+  for (i=0; i<=hsize+1; i++)
+    {
+      bitmap[cbn][i][0] = 0;
+      bitmap[1-cbn][i][0] = 0;
+      bitmap[cbn][i][vsize+1] = 0;
+      bitmap[1-cbn][i][vsize+1] = 0;
+    }
+  for (j=0; j<=vsize+1; j++)
+    {
+      bitmap[cbn][0][j] = 0;
+      bitmap[1-cbn][0][j] = 0;
+      bitmap[cbn][hsize+1][j] = 0;
+      bitmap[1-cbn][hsize+1][j] = 0;
+    }
+}
+
+
+void bitmap_next(void)
+{
+  int i,j;
+  int c;
+  
+  generation++;
+
+  for (i=1; i<=hsize; i++)
+    for(j=1; j<=vsize; j++)
+      {
+	c = bitmap[cbn][i-1][j-1] + bitmap[cbn][i-1][j] 
+	  + bitmap[cbn][i-1][j+1] + bitmap[cbn][i][j-1] 
+	  + bitmap[cbn][i][j+1]   + bitmap[cbn][i+1][j-1] 
+	  + bitmap[cbn][i+1][j]   + bitmap[cbn][i+1][j+1];
+	pixel(c,i,j);
+      }
+  cbn = 1-cbn;
+}
+
+
+void start_life(void)
+{
+	cbn = 0;
+	generation = 0;
+	bitmap_init();
+  
+  return;
+}
+
+
+
+
+
+

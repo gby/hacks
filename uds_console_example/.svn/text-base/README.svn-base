@@ -1,0 +1,60 @@
+
+Run the server:
+
+[gby@shu unix_domain_sockets]$ ./server 
+demo_server going into background... 
+
+The clients needs a serve name and a message:
+[gby@shu unix_domain_sockets]$ ./client 
+Usage: ./client [server name] [message]
+
+The demo server understands the following commands: 
+
+"c" will send back the current value of the counter:
+
+[gby@shu unix_domain_sockets]$ ./client demo_server c
+demo_server# Counter is 13
+
+[gby@shu unix_domain_sockets]$ ./client demo_server c
+demo_server# Counter is 15
+[gby@shu unix_domain_sockets]$ ./client demo_server c
+demo_server# Counter is 16
+
+"l" will send the current value of the counter to 
+the system log:
+
+[gby@shu unix_domain_sockets]$ ./client demo_server l
+demo_server# Wrote counter value to log.
+
+This will show up in the system log as the following
+messages:
+
+Feb 12 18:30:53 shu demo_server[20079]: Counter is 17
+
+"q" will ask the server to terminate gracefully:
+
+[gby@shu unix_domain_sockets]$ ./client demo_server q
+demo_server# Server quits.
+
+When the server quits because of a user request or
+a signal, it will log a message as follows to the 
+system log:
+
+Feb 12 18:32:40 shu demo_server[20200]: Server terminated on user request
+ or:
+Feb 12 18:34:44 shu demo_server[20225]: Server terminated on signal request
+
+
+Anything else will get you an error message:
+
+[gby@shu unix_domain_sockets]$ ./client demo_server 0
+demo_server# Unknown command
+
+Trying to contact a non running server will produce 
+the following error:
+
+[gby@shu unix_domain_sockets]$ ./client demo_server l
+Connecting: No such file or directory
+
+
+

@@ -1,0 +1,20 @@
+
+.PHONY: all $(SUBDIRS-clean) $(SUBDIRS-build)
+
+SRC_FILES = $(shell ls *.c)
+TARGETS = $(SRC_FILES:.c=)
+OBJECTS = $(SRC_FILES:.c=.o)
+
+SUBDIRS-clean = $(SUBDIRS:=-clean)
+SUBDIRS-build = $(SUBDIRS:=-build)
+
+all: $(TARGETS) $(SUBDIRS-build)
+
+$(SUBDIRS-build):
+	$(MAKE) -C $(@:-build=)
+
+$(SUBDIRS-clean):
+	$(MAKE) -C $(@:-clean=) clean
+
+clean: $(SUBDIRS-clean)
+	@rm -f $(TARGETS) $(OBJECTS) *~

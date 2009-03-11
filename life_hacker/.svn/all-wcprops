@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/src/hacks/!svn/ver/9/life_hacker
+END
+client.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/src/hacks/!svn/ver/8/life_hacker/client.c
+END
+life.c
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/src/hacks/!svn/ver/8/life_hacker/life.c
+END
+server.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/src/hacks/!svn/ver/8/life_hacker/server.c
+END
+console.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/src/hacks/!svn/ver/8/life_hacker/console.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/src/hacks/!svn/ver/8/life_hacker/Makefile
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/src/hacks/!svn/ver/9/life_hacker/README
+END
