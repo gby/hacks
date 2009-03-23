@@ -16,7 +16,7 @@
         evp.sigev_signo = SIGALRM; /* Any signal value works */ 
         evp.sigev_notify = SIGEV_NONE;
 
-        retval = timer_create(CLOCK_REALTIME, &evp,
+        retval = timer_create(CLOCK_MONOTONIC, &evp,
                                                 &created_timer_id);
 
         if (retval < 0) {
